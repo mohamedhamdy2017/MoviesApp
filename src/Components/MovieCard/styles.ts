@@ -4,7 +4,7 @@ import {calcFont, calcHeight, calcWidth} from '../../Utils/responsive';
 
 export default StyleSheet.create({
   container: {
-    width: '90%',
+    flex: 1,
     height: calcHeight(185),
     borderRadius: calcWidth(20),
     shadowColor: COLORS.black,
@@ -19,6 +19,7 @@ export default StyleSheet.create({
     borderColor: COLORS.gray,
     padding: calcWidth(15),
     flexDirection: 'row',
+    marginVertical: calcHeight(8)
   },
   image: {
     width: calcWidth(100),
