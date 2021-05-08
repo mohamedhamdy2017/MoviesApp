@@ -1,12 +1,16 @@
 import React, {useState} from 'react';
-import {FlatList, Text, SafeAreaView} from 'react-native';
+import {View, FlatList, Text, SafeAreaView} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+
 import {MovieCard} from '../../Components/MovieCard';
 import {CategoryCard} from '../../Components/CategoryCard';
 import styles from './styles';
-import {cat_data, movies_data} from 'src/Dummy_Data/Movies';
+import {cat_data, movies_data} from '../../Dummy_Data/Movies';
 
 export const Movies: React.FC = () => {
+  const navigation = useNavigation();
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
+
   const renderHeaderItem = ({item, index}: {item: Object; index: number}) => {
     const selected = selectedCategoryIndex == index;
     return (
@@ -42,20 +46,23 @@ export const Movies: React.FC = () => {
         title={item.title}
         release_date={item.release_date}
         geners={item.geners}
+        onPress={() => navigation.navigate('MovieDetails', {item})}
       />
     );
   };
 
   return (
     <SafeAreaView>
-      <Text style={styles.head}>{'Movies'}</Text>
-      {ListHeaderComponent()}
-      <FlatList
-        data={movies_data}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderMoviesItem}
-        showsVerticalScrollIndicator={false}
-      />
+      <View style={{padding: 10}}>
+        <Text style={styles.head}>{'Movies'}</Text>
+        {ListHeaderComponent()}
+        <FlatList
+          data={movies_data}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderMoviesItem}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
     </SafeAreaView>
   );
 };
