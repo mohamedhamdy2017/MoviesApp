@@ -15,6 +15,7 @@ interface CardProps {
   release_date: String;
   vote_average: String;
   geners: Array<Gener>;
+  onPress: () => void;
 }
 
 interface Gener {
@@ -28,9 +29,13 @@ export const MovieCard: React.FC<CardProps> = ({
   release_date,
   vote_average,
   geners,
+  onPress,
 }: CardProps) => {
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={styles.container}
+      activeOpacity={0.7}
+      onPress={onPress}>
       <Image source={image} resizeMode="cover" style={styles.image} />
       <View style={styles.details}>
         <Text style={styles.title}>{title}</Text>
