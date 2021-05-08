@@ -1,3 +1,4 @@
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React from 'react';
 import {
   View,
@@ -7,12 +8,17 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
-import {Credits, Geners} from '../../Dummy_Data/MovieDetails';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import styles from './styles';
 
 export const MovieDetails: React.FC = () => {
+  const navigation = useNavigation();
+  const {params} = useRoute();
+
   return (
     <SafeAreaView style={styles.container}>
+      <Icon name="chevron-left" size={40} onPress={() => navigation.goBack()} />
       <ScrollView
         style={[styles.container, {padding: 15}]}
         bounces={false}
@@ -20,28 +26,24 @@ export const MovieDetails: React.FC = () => {
         <View style={{alignItems: 'center'}}>
           <Image
             source={{
-              uri: 'https://i.ytimg.com/vi/MJuFdpVCcsY/movieposter_en.jpg',
+              uri: params?.item?.image,
             }}
             resizeMode="cover"
             style={styles.image}
           />
-          <Text style={styles.name}>{'Movie'}</Text>
-          <Text style={styles.rate}>{'vote'}</Text>
+          <Text style={styles.name}>{params?.item?.title}</Text>
+          <Text style={styles.rate}>{params?.item?.vote_average}</Text>
         </View>
 
         <Text style={styles.sectionTitle}>{'Over view'}</Text>
-        <Text style={styles.overView}>
-          {
-            'Over view Over view Over view Over view Over view Over view Over viewOver view Over view Over view Over view Over view'
-          }
-        </Text>
+        <Text style={styles.overView}>{params?.item?.overView}</Text>
 
         <Text style={styles.sectionTitle}>{'Geners'}</Text>
 
         <FlatList
           scrollEnabled={false}
           contentContainerStyle={styles.genersList}
-          data={Geners}
+          data={params?.item?.geners}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => {
             return (
@@ -59,7 +61,7 @@ export const MovieDetails: React.FC = () => {
 
         <FlatList
           contentContainerStyle={styles.creditList}
-          data={Credits}
+          data={params?.item?.credits}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => {
             return (
