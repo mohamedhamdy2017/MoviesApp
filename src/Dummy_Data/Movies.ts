@@ -16,6 +16,28 @@ export const movies_data = [
       {id: '3', title: 'Romance'},
     ],
     vote_average: '60%',
+    overView:
+      'Over view Over view Over view Over view Over view Over view Over viewOver view Over view Over view Over view Over view',
+    credits: [
+      {
+        id: '1',
+        title: 'M.G',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtYzPsbcbKUx4eRTKDf87a1NTaD6YqnTdWcg&usqp=CAU',
+      },
+      {
+        id: '2',
+        title: 'M.G',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtYzPsbcbKUx4eRTKDf87a1NTaD6YqnTdWcg&usqp=CAU',
+      },
+      {
+        id: '3',
+        title: 'M.G',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtYzPsbcbKUx4eRTKDf87a1NTaD6YqnTdWcg&usqp=CAU',
+      },
+    ],
   },
   {
     id: '2',
@@ -28,6 +50,28 @@ export const movies_data = [
       {id: '3', title: 'Romance'},
     ],
     vote_average: '50%',
+    overView:
+      'Over view Over view Over view Over view Over view Over view Over viewOver view Over view Over view Over view Over view',
+    credits: [
+      {
+        id: '1',
+        title: 'B.G',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtYzPsbcbKUx4eRTKDf87a1NTaD6YqnTdWcg&usqp=CAU',
+      },
+      {
+        id: '2',
+        title: 'B.G',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtYzPsbcbKUx4eRTKDf87a1NTaD6YqnTdWcg&usqp=CAU',
+      },
+      {
+        id: '3',
+        title: 'B.G',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtYzPsbcbKUx4eRTKDf87a1NTaD6YqnTdWcg&usqp=CAU',
+      },
+    ],
   },
   {
     id: '3',
@@ -40,5 +84,27 @@ export const movies_data = [
       {id: '3', title: 'Romance'},
     ],
     vote_average: '90%',
+    overView:
+      'Over view Over view Over view Over view Over view Over view Over viewOver view Over view Over view Over view Over view',
+    credits: [
+      {
+        id: '1',
+        title: 'B.G',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtYzPsbcbKUx4eRTKDf87a1NTaD6YqnTdWcg&usqp=CAU',
+      },
+      {
+        id: '2',
+        title: 'B.G',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtYzPsbcbKUx4eRTKDf87a1NTaD6YqnTdWcg&usqp=CAU',
+      },
+      {
+        id: '3',
+        title: 'B.G',
+        image:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtYzPsbcbKUx4eRTKDf87a1NTaD6YqnTdWcg&usqp=CAU',
+      },
+    ],
   },
 ];
