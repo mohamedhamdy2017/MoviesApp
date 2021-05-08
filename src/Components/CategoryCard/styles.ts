@@ -4,15 +4,20 @@ import {calcHeight, calcWidth} from '../../Utils/responsive';
 
 export default StyleSheet.create({
   container: {
-    width: calcWidth(120),
+    width: calcWidth(100),
     height: calcHeight(35),
     borderRadius: calcWidth(20),
-    backgroundColor: COLORS.green,
+    backgroundColor: COLORS.gray,
     alignItems: 'center',
     justifyContent: 'center',
+    marginHorizontal: calcWidth(5)
   },
   title: {
-    color: COLORS.white,
-    fontWeight: '600',
+    color: COLORS.black,
+    fontWeight: '700',
   },
+  selection: {
+    backgroundColor: COLORS.green,
+    color: COLORS.white
+  }
 });
