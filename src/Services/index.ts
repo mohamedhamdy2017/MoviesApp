@@ -11,7 +11,6 @@ export const get_request = async ({target}: ARGUMENT) => {
     const result = await fetch(url, {method: 'GET'});
     return await result.json();
   } catch (error) {
-    console.log('error', error);
     return null;
   }
 };
