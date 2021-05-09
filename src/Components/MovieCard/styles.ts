@@ -10,16 +10,16 @@ export default StyleSheet.create({
     shadowColor: COLORS.black,
     shadowOffset: {
       width: 0,
-      height: calcHeight(5),
+      height: calcHeight(1),
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 1,
-    borderWidth: 0.5,
-    borderColor: COLORS.gray,
+    backgroundColor: COLORS.white,
     padding: calcWidth(15),
     flexDirection: 'row',
-    marginVertical: calcHeight(8)
+    marginVertical: calcHeight(8),
+    alignSelf:'center'
   },
   image: {
     width: calcWidth(100),
@@ -30,6 +30,7 @@ export default StyleSheet.create({
     marginLeft: calcWidth(15),
   },
   title: {
+    width: calcWidth(220),
     fontSize: calcFont(20),
     fontWeight: '700',
     marginBottom: calcHeight(12),

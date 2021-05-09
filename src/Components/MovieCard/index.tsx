@@ -1,55 +1,87 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  ImageSourcePropType,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Image, TouchableOpacity, FlatList} from 'react-native';
+import moment from 'moment';
+
+import {getImagePath} from '../../Helpers';
 import styles from './styles';
+import {useDispatch, useSelector} from 'react-redux';
+import {get_genres} from '../../Store/actions/MoviesActions';
 
 interface CardProps {
-  image: ImageSourcePropType;
-  title: String;
-  release_date: String;
-  vote_average: String;
-  geners: Array<Gener>;
+  index: number;
+  poster_path: string;
+  title: string;
+  release_date: string;
+  vote_average: string | any;
+  genre_ids: Array<string>;
   onPress: () => void;
 }
 
-interface Gener {
-  id: String;
-  title: String;
+interface GENRE {
+  id: string;
+  name: string;
 }
 
 export const MovieCard: React.FC<CardProps> = ({
-  image,
+  index,
+  poster_path,
   title,
   release_date,
   vote_average,
-  geners,
+  genre_ids,
   onPress,
 }: CardProps) => {
+  const dispatch = useDispatch();
+  const [genresNames, setGenresNames] = useState<Array<String>>([]);
+
+  const {genres} = useSelector((state: any) => {
+    return {
+      genres: state.movies.genres,
+    };
+  });
+
+  useEffect(() => {
+    dispatch(get_genres());
+  }, []);
+
+  useEffect(() => {
+    let arr: Array<String> = [];
+    genres?.filter((genre: GENRE) => {
+      if (genre_ids?.includes(genre.id)) {
+        arr.push(genre.name);
+        setGenresNames(arr);
+      }
+    });
+  }, []);
+
   return (
     <TouchableOpacity
+      key={`item-${index.toString()}`}
       style={styles.container}
       activeOpacity={0.7}
       onPress={onPress}>
-      <Image source={image} resizeMode="cover" style={styles.image} />
+      <Image
+        source={{uri: getImagePath(poster_path)}}
+        resizeMode="cover"
+        style={styles.image}
+      />
       <View style={styles.details}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={[styles.title, styles.date]}>{release_date}</Text>
+        <Text numberOfLines={1} style={styles.title}>
+          {title}
+        </Text>
+        <Text style={[styles.title, styles.date]}>
+          {moment(release_date).format('LL')}
+        </Text>
 
         <FlatList
           scrollEnabled={false}
-          data={geners}
+          data={genresNames}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => {
+          renderItem={({item, index}) => {
             return (
-              <View style={styles.generView}>
+              <View style={styles.generView} key={`item-${index.toString()}`}>
                 <Text style={styles.gener} numberOfLines={1}>
-                  {item.title}
+                  {item}
                 </Text>
               </View>
             );
@@ -57,7 +89,7 @@ export const MovieCard: React.FC<CardProps> = ({
           numColumns={2}
         />
       </View>
-      <Text style={styles.rate}>{vote_average}</Text>
+      <Text style={styles.rate}>{vote_average * 10}%</Text>
     </TouchableOpacity>
   );
 };
