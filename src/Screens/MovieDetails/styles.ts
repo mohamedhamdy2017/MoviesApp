@@ -56,12 +56,16 @@ export default StyleSheet.create({
     marginTop: calcHeight(15),
     paddingBottom: calcHeight(20),
   },
-  itemContainer: {flex: 1, alignItems: 'center'},
+  itemContainer: {
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: calcWidth(8),
+  },
   creditImage: {
     width: calcWidth(80),
     height: calcWidth(80),
     borderRadius: calcWidth(40),
     margin: calcWidth(10),
   },
-  actorName: {fontSize: calcFont(18), fontWeight: '600'},
+  actorName: {fontSize: calcFont(18), fontWeight: '600', width: calcWidth(100)},
 });
