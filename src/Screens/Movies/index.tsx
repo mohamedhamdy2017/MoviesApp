@@ -37,9 +37,9 @@ export const Movies: React.FC = () => {
 
   const {movies, page, loading} = useSelector((state: any) => {
     return {
-      movies: state.movies.movies,
-      page: state.movies.page,
-      loading: state.movies.loading,
+      movies: state?.movies.movies,
+      page: state?.movies.page,
+      loading: state?.movies.loading,
     };
   });
 
