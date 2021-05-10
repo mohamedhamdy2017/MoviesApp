@@ -25,7 +25,7 @@ export default (state = INIT_STATE, action: any) => {
     case GET_MOVIES_SUCCESS:
       return {
         ...state,
-        movies: [...state.movies, ...action.payload],
+        movies: action.payload,
         page: action.page,
         loading: false,
       };
