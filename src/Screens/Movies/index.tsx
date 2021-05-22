@@ -1,20 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  FlatList,
-  Text,
-  SafeAreaView,
-  ActivityIndicator,
-} from 'react-native';
+import {View, FlatList, Text, SafeAreaView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import {MovieCard} from '../../Components/MovieCard';
 import {CategoryCard} from '../../Components/CategoryCard';
 import styles from './styles';
 import {cat_data} from '../../Dummy_Data/Movies';
-import {useDispatch, useSelector} from 'react-redux';
-import {get_genres, get_movies} from '../../Store/actions/MoviesActions';
 import {LoadingModal} from '../../Components/LoadingModal';
+import {useMovies} from '../../Hooks/useMovies';
+import {useQueryClient} from 'react-query';
 
 interface ITEM {
   poster_path: string;
@@ -30,18 +24,17 @@ interface CATEGORYITEMPROPS {
 
 export const Movies: React.FC = () => {
   const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState<number>(0);
   const [type, setType] = useState<string>('upcoming');
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [movies, setMovies] = useState<Array<ITEM>>([]);
 
-  const {movies, page, loading} = useSelector((state: any) => {
-    return {
-      movies: state?.movies.movies,
-      page: state?.movies.page,
-      loading: state?.movies.loading,
-    };
-  });
+  const {data, refetch, isFetching, fetchNextPage} = useMovies(
+    type,
+    pageNumber,
+  );
 
   useEffect(() => {
     const type =
@@ -51,12 +44,24 @@ export const Movies: React.FC = () => {
         ? 'popular'
         : 'top_rated';
     setType(type);
+    setPageNumber(1);
   }, [selectedCategoryIndex]);
 
   useEffect(() => {
-    dispatch(get_movies({type, page: 1}));
-    dispatch(get_genres());
-  }, [selectedCategoryIndex]);
+    setMovies(data?.pages[0].results);
+  }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [type, pageNumber]);
+
+  useEffect(() => {
+    fetchNextPage({pageParam: pageNumber}).then(res => {
+      if (data && res.isSuccess) {
+        setMovies(prev => [...prev, ...res.data?.pages[0].results]);
+      }
+    });
+  }, [pageNumber, queryClient]);
 
   const renderHeaderItem = ({
     item,
@@ -109,7 +114,7 @@ export const Movies: React.FC = () => {
   };
 
   const onEndReached = () => {
-    dispatch(get_movies({type, page: page + 1}));
+    setPageNumber(old => old + 1);
   };
 
   return (
@@ -123,11 +128,10 @@ export const Movies: React.FC = () => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={renderMoviesItem}
           showsVerticalScrollIndicator={false}
-          initialNumToRender={8}
           onEndReached={onEndReached}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={1}
         />
-        <LoadingModal visible={loading} />
+        <LoadingModal visible={isFetching} />
       </View>
     </SafeAreaView>
   );
