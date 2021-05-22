@@ -4,8 +4,7 @@ import moment from 'moment';
 
 import {getImagePath} from '../../Helpers';
 import styles from './styles';
-import {useDispatch, useSelector} from 'react-redux';
-import {get_genres} from '../../Store/actions/MoviesActions';
+import {useGeners} from '../../Hooks/useGeners';
 
 interface CardProps {
   index: number;
@@ -31,22 +30,13 @@ export const MovieCard: React.FC<CardProps> = ({
   genre_ids,
   onPress,
 }: CardProps) => {
-  const dispatch = useDispatch();
   const [genresNames, setGenresNames] = useState<Array<String>>([]);
 
-  const {genres} = useSelector((state: any) => {
-    return {
-      genres: state.movies.genres,
-    };
-  });
-
-  useEffect(() => {
-    dispatch(get_genres());
-  }, []);
+  const {data} = useGeners();
 
   useEffect(() => {
     let arr: Array<String> = [];
-    genres?.filter((genre: GENRE) => {
+    data?.genres?.filter((genre: GENRE) => {
       if (genre_ids?.includes(genre.id)) {
         arr.push(genre.name);
         setGenresNames(arr);
