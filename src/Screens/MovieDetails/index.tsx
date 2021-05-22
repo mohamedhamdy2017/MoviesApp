@@ -9,16 +9,17 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useDispatch, useSelector} from 'react-redux';
+import {useCredits} from '../../Hooks/useCredits';
+import {useGeners} from '../../Hooks/useGeners';
 
 import {getImagePath} from '../../Helpers';
-import {get_genres, get_credits} from '../../Store/actions/MoviesActions';
 import styles from './styles';
+import {LoadingModal} from '../../Components/LoadingModal';
 
 interface ITEM {
   adult: boolean;
   backdrop_path: string;
-  id: string | number ;
+  id: string | number;
   original_language: string;
   original_title: string;
   overview: string;
@@ -41,30 +42,20 @@ export const MovieDetails: React.FC = () => {
   const navigation = useNavigation();
   const {item} = useRoute().params;
 
-  const dispatch = useDispatch();
-
   const [genresNames, setGenresNames] = useState<Array<String>>([]);
-  const {genres, credits} = useSelector((state: any) => {
-    return {
-      genres: state.movies.genres,
-      credits: state.movies.credits,
-    };
-  });
 
-  useEffect(() => {
-    dispatch(get_genres());
-    dispatch(get_credits(item?.id));
-  }, []);
+  const {data: Geners} = useGeners();
+  const {data: credits, isLoading} = useCredits(item.id);
 
   useEffect(() => {
     let arr: Array<String> = [];
-    genres?.filter((genre: GENRE) => {
+    Geners.genres?.filter((genre: GENRE) => {
       if (item?.genre_ids?.includes(genre.id)) {
         arr.push(genre.name);
         setGenresNames(arr);
       }
     });
-  }, [genres]);
+  }, [Geners.genres]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -111,11 +102,11 @@ export const MovieDetails: React.FC = () => {
 
         <FlatList
           contentContainerStyle={styles.creditList}
-          data={credits}
+          data={credits?.cast}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => {
             return (
-              <View style={styles.itemContainer}>
+              <View style={styles.itemContainer} key={item.id}>
                 <Image
                   source={{uri: getImagePath(item.profile_path)}}
                   resizeMode="cover"
@@ -130,6 +121,7 @@ export const MovieDetails: React.FC = () => {
           horizontal
         />
       </ScrollView>
+      <LoadingModal visible={isLoading} />
     </SafeAreaView>
   );
 };
