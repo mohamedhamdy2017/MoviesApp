@@ -8,7 +8,7 @@ import styles from './styles';
 import {cat_data} from '../../Dummy_Data/Movies';
 import {LoadingModal} from '../../Components/LoadingModal';
 import {useMovies} from '../../Hooks/useMovies';
-import {useQueryClient} from 'react-query';
+import {useGeners} from '../../Hooks/useGeners';
 
 interface ITEM {
   poster_path: string;
@@ -24,17 +24,17 @@ interface CATEGORYITEMPROPS {
 
 export const Movies: React.FC = () => {
   const navigation = useNavigation();
-  const queryClient = useQueryClient();
 
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState<number>(0);
   const [type, setType] = useState<string>('upcoming');
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [movies, setMovies] = useState<Array<ITEM>>([]);
 
-  const {data, refetch, isFetching, fetchNextPage} = useMovies(
+  const {data: moviesData, refetch, isFetching: fetchMoviesLoading} = useMovies(
     type,
     pageNumber,
   );
+  const {data: genersData, isFetching: fetchGenersLoading} = useGeners();
 
   useEffect(() => {
     const type =
@@ -45,23 +45,18 @@ export const Movies: React.FC = () => {
         : 'top_rated';
     setType(type);
     setPageNumber(1);
+    setMovies([]);
   }, [selectedCategoryIndex]);
 
   useEffect(() => {
-    setMovies(data?.pages[0].results);
-  }, [data]);
+    if (moviesData?.pages) {
+      setMovies(prev => [...prev, ...moviesData?.pages[0].results]);
+    }
+  }, [moviesData]);
 
   useEffect(() => {
     refetch();
   }, [type, pageNumber]);
-
-  useEffect(() => {
-    fetchNextPage({pageParam: pageNumber}).then(res => {
-      if (data && res.isSuccess) {
-        setMovies(prev => [...prev, ...res.data?.pages[0].results]);
-      }
-    });
-  }, [pageNumber, queryClient]);
 
   const renderHeaderItem = ({
     item,
@@ -102,6 +97,7 @@ export const Movies: React.FC = () => {
   const renderMoviesItem = ({item, index}: {item: ITEM; index: number}) => {
     return (
       <MovieCard
+        data={genersData}
         index={index}
         poster_path={item.poster_path}
         vote_average={item.vote_average}
@@ -131,7 +127,7 @@ export const Movies: React.FC = () => {
           onEndReached={onEndReached}
           onEndReachedThreshold={1}
         />
-        <LoadingModal visible={isFetching} />
+        <LoadingModal visible={fetchMoviesLoading || fetchGenersLoading} />
       </View>
     </SafeAreaView>
   );
