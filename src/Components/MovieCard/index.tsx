@@ -4,9 +4,11 @@ import moment from 'moment';
 
 import {getImagePath} from '../../Helpers';
 import styles from './styles';
-import {useGeners} from '../../Hooks/useGeners';
 
 interface CardProps {
+  data: {
+    genres: Array<GENRE>;
+  };
   index: number;
   poster_path: string;
   title: string;
@@ -22,6 +24,7 @@ interface GENRE {
 }
 
 export const MovieCard: React.FC<CardProps> = ({
+  data,
   index,
   poster_path,
   title,
@@ -31,8 +34,6 @@ export const MovieCard: React.FC<CardProps> = ({
   onPress,
 }: CardProps) => {
   const [genresNames, setGenresNames] = useState<Array<String>>([]);
-
-  const {data} = useGeners();
 
   useEffect(() => {
     let arr: Array<String> = [];
